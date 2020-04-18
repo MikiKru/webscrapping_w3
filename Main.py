@@ -23,15 +23,26 @@ class ImdbScrapper:
         html_content = BeautifulSoup(self.page.content, 'html.parser')
         # print(html_content.prettify())
         titles = html_content.find_all(class_ = "titleColumn")
+        years = html_content.find_all('span', attrs={'class' : 'secondaryInfo'})
         ratings = html_content.find_all(class_ = "ratingColumn imdbRating")
-        # seq = ['a','b','c']
-        # for i, o in enumerate(seq):
-        #     print(i, o)
+        refs = html_content.find_all(class_ = "titleColumn")
+
         for index, title in enumerate(titles):
             titles[index] = str(titles[index]).split(">")[2].replace("</a","")
+            years[index] = str(years[index]).split("(")[1].split(")")[0]
             ratings[index] = str(ratings[index]).split(">")[2].replace("</strong","")
+            refs[index] = "https://www.imdb.com" + str(refs[index]).split('href="')[1].split('"')[0]
             print(titles[index])
+            print(years[index])
             print(ratings[index])
+            print(refs[index])
+            self.getMovieDetails(refs[index])
+    def getMovieDetails(self, url):
+        details = requests.get(url)
+        details_html = BeautifulSoup(details.content, 'html.parser')
+        print(details_html.prettify())
+
+
 
 imdb = ImdbScrapper()
 imdb.getTop250()
