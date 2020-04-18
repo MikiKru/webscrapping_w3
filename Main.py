@@ -41,7 +41,8 @@ class ImdbScrapper:
         details = requests.get(url)
         details_html = BeautifulSoup(details.content, 'html.parser')
         print(details_html.prettify())
-
+        # pobierz reżysera
+        # pobierz gwiazdy 3 pozycje
 
 
 imdb = ImdbScrapper()
