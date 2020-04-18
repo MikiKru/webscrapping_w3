@@ -36,7 +36,7 @@ class ImdbScrapper:
             print(years[index])
             print(ratings[index])
             print(refs[index])
-            self.getMovieDetails(refs[index])
+            # self.getMovieDetails(refs[index])
     def getMovieDetails(self, url):
         details = requests.get(url)
         details_html = BeautifulSoup(details.content, 'html.parser')
