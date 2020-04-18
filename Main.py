@@ -57,7 +57,7 @@ class ImdbScrapper:
         file.write('| %100s | %5s | %50s | %100s | %5s | %50s |\n' %
                    ('TITILE','YEAR', 'DIRECTOR', 'STARS', 'RATE', 'REFLINK'))   # zapis nagłówka
         for movie in self.movies:
-            file.write(movie + '\n')                                            # zapis wszystkich filmów
+            file.write(str(movie) + '\n')                                       # zapis wszystkich filmów
         file.close()
     def saveMoviesToDatabase(self):
         # konfiguracja połączenia powinna znajdować się w __init__()
