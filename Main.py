@@ -24,10 +24,15 @@ class ImdbScrapper:
         # print(html_content.prettify())
         titles = html_content.find_all(class_ = "titleColumn")
         ratings = html_content.find_all(class_ = "ratingColumn imdbRating")
-
+        # seq = ['a','b','c']
+        # for i, o in enumerate(seq):
+        #     print(i, o)
         for index, title in enumerate(titles):
+            titles[index] = str(titles[index]).split(">")[2].replace("</a","")
+            ratings[index] = str(ratings[index]).split(">")[2].replace("</strong","")
             print(titles[index])
             print(ratings[index])
+
 imdb = ImdbScrapper()
 imdb.getTop250()
 imdb.scrappingTop250()
