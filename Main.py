@@ -60,6 +60,7 @@ class ImdbScrapper:
             file.write(str(movie) + '\n')                                       # zapis wszystkich filmów
         file.close()
     def saveMoviesToDatabase(self):
+        # ZADANIE DOMOWE
         # konfiguracja połączenia powinna znajdować się w __init__()
         pass
 imdb = ImdbScrapper()
