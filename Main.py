@@ -43,6 +43,13 @@ class ImdbScrapper:
         print(details_html.prettify())
         # pobierz reżysera
         # pobierz gwiazdy 3 pozycje
+        kolumna = details_html.findAll(class_="credit_summary_item")
+        rezyser = (str(kolumna).split(">")[4])[:-3]
+        aktorzy = (str(kolumna).split("Stars:")[1].split(">")[2]).replace("</a", ""), \
+                  (str(kolumna).split("Stars:")[1].split(">")[4]).replace("</a", ""), \
+                  (str(kolumna).split("Stars:")[1].split(">")[6]).replace("</a", "")
+        print(aktorzy)
+        print(rezyser)
 
 
 imdb = ImdbScrapper()
