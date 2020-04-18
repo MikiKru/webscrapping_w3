@@ -13,7 +13,7 @@ from Model import top250
 
 class ImdbScrapper:
     def __init__(self):
-        self.movies = []
+        self.movies = []        # list obiektow kalsy modelu -> top250
     # self.obiekt -> zakres wydoczności obejmuje całąklasę ImdbScrapper
     def getTop250(self):
         try:
@@ -40,6 +40,7 @@ class ImdbScrapper:
             # zapis danych o filmie do obiektu modelu
             movie = top250(titles[index], years[index], director, stars, ratings[index], refs[index])
             print(movie)
+            self.movies.append(movie)   # dodawanie obiektu filmu do listy
     def getMovieDetails(self, url):
         details = requests.get(url)
         details_html = BeautifulSoup(details.content, 'html.parser')
@@ -51,7 +52,17 @@ class ImdbScrapper:
                   (str(column).split("Stars:")[1].split(">")[4]).replace("</a", ""), \
                   (str(column).split("Stars:")[1].split(">")[6]).replace("</a", "")
         return director, stars
-
+    def saveMoviesToFile(self):
+        file = open("movies_list.txt",'w')
+        file.write('| %100s | %5s | %50s | %100s | %5s | %50s |\n' %
+                   ('TITILE','YEAR', 'DIRECTOR', 'STARS', 'RATE', 'REFLINK'))   # zapis nagłówka
+        for movie in self.movies:
+            file.write(movie + '\n')                                            # zapis wszystkich filmów
+        file.close()
+    def saveMoviesToDatabase(self):
+        # konfiguracja połączenia powinna znajdować się w __init__()
+        pass
 imdb = ImdbScrapper()
 imdb.getTop250()
 imdb.scrappingTop250()
+imdb.saveMoviesToFile()
