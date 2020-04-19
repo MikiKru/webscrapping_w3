@@ -12,8 +12,7 @@ from Model import top250
 
 
 class ImdbScrapper:
-    def __init__(self):
-        self.movies = []        # list obiektow kalsy modelu -> top250
+
     # self.obiekt -> zakres wydoczności obejmuje całąklasę ImdbScrapper
     def getTop250(self):
         try:
@@ -53,16 +52,31 @@ class ImdbScrapper:
                   (str(column).split("Stars:")[1].split(">")[6]).replace("</a", "")
         return director, stars
     def saveMoviesToFile(self):
-        file = open("movies_list.txt",'w')
+        file = open("movies_list.txt",'w', encoding='utf-8', errors="ignore")
         file.write('| %100s | %5s | %50s | %100s | %5s | %50s |\n' %
                    ('TITILE','YEAR', 'DIRECTOR', 'STARS', 'RATE', 'REFLINK'))   # zapis nagłówka
         for movie in self.movies:
-            file.write(str(movie) + '\n')                                       # zapis wszystkich filmów
+            file.write(str(movie) + '\n')                # zapis wszystkich filmów
         file.close()
+    def __init__(self):
+        user = "tm_user"
+        passwd = "qwe123"
+        self.conn = pymysql.connect("localhost", user, passwd, "tm_db")
+        self.c = self.conn.cursor()
+        self.movies = []        # list obiektow klasy modelu -> top250
+    def createTableTop250(self):
+        # grant SELECT, INSERT, DELETE, UPDATE, CREATE on tm_db.* to 'tm_user'@'localhost';
+        self.c.execute("???")
+        self.conn.commit()
+        print("Utowrzono nową tabelę")
     def saveMoviesToDatabase(self):
-        # ZADANIE DOMOWE
-        # konfiguracja połączenia powinna znajdować się w __init__()
-        pass
+
+        self.c.execute("???")
+
+        self.conn.commit()
+        print("Dodano filmy do tabeli")
+        self.conn.close()
+
 imdb = ImdbScrapper()
 imdb.getTop250()
 imdb.scrappingTop250()
