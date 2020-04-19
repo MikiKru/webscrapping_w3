@@ -31,6 +31,8 @@ class ImdbScrapper:
         refs = html_content.find_all(class_ = "titleColumn")
 
         for index, title in enumerate(titles):
+            if(index == 10):
+                break
             titles[index] = str(titles[index]).split(">")[2].replace("</a","")
             years[index] = str(years[index]).split("(")[1].split(")")[0]
             ratings[index] = str(ratings[index]).split(">")[2].replace("</strong","")
@@ -66,13 +68,20 @@ class ImdbScrapper:
         self.movies = []        # list obiektow klasy modelu -> top250
     def createTableTop250(self):
         # grant SELECT, INSERT, DELETE, UPDATE, CREATE on tm_db.* to 'tm_user'@'localhost';
-        self.c.execute("???")
+        self.c.execute("create table top250("
+                       "movie_id int primary key auto_increment,"
+                       "title varchar(255),"
+                       "year varchar(4),"
+                       "director varchar(255),"
+                       "stars text,"
+                       "rating varchar(4),"
+                       "link varchar(255))")
         self.conn.commit()
         print("Utowrzono nową tabelę")
     def saveMoviesToDatabase(self):
-
-        self.c.execute("???")
-
+        for movie in self.movies:
+            self.c.execute("INSERT INTO top250 VALUES (default, %s, %s, %s, %s, %s, %s)",
+               (movie.title, movie.year, movie.director, str(movie.stars), movie.rating, movie.link))
         self.conn.commit()
         print("Dodano filmy do tabeli")
         self.conn.close()
@@ -81,3 +90,5 @@ imdb = ImdbScrapper()
 imdb.getTop250()
 imdb.scrappingTop250()
 imdb.saveMoviesToFile()
+# imdb.createTableTop250()
+imdb.saveMoviesToDatabase()
